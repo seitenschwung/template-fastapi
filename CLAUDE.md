@@ -38,6 +38,10 @@ managed by the owner. You can't change workflow files, so build the project to f
 - It must listen on port **8080**, answer `GET /healthz` with 200 and serve `GET /version.txt`
   with the build argument `APP_VERSION` (the commit SHA).
 - If `/` returns HTML, CI also crawls the site (axe WCAG AA, Lighthouse at least 90).
+- `docker-compose.yml` keeps the CrowdSec labels (`crowdsec.enable=true`,
+  `crowdsec.labels.type=http`) and the json-file log rotation on every service that serves traffic.
+  The CrowdSec agent on the server reads the container logs through them. Don't remove them; the
+  type must match a parser there, so ask the owner before changing it.
 - `docker-compose.yml` is what Coolify runs. Keep `image: ${IMAGE}`. `main` is production: every
   merge deploys after green CI. Work on branches, open PRs.
 
